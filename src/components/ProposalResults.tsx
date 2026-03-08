@@ -35,7 +35,7 @@ export default function ProposalResults({
 
   const selected = products.find((p) => p.id === selectedId) ?? products[0];
   const monthlyPayment = selected?.monthlyPayments[0]?.monthlyPayment ?? 0;
-  const termYears = selected?.termYears ?? 25;
+  const termYears = selected?.termYears ?? 12;
 
   const trackingBase = {
     name: params.name,
