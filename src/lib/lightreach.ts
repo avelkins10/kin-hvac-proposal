@@ -1,35 +1,78 @@
 import type { FinancingProduct } from "@/types";
 
+/**
+ * LightReach payment factors per $1 of system price.
+ * Source: official LightReach calculator, validated against kin-hvac-tool.
+ * Calculated from $14,998 system price reference point.
+ */
+const PAYMENT_FACTORS = {
+  "10yr_0%": 0.01546,
+  "10yr_0.99%": 0.01487,
+  "10yr_1.99%": 0.01416,
+  "12yr_0%": 0.01397,
+  "12yr_0.99%": 0.01321,
+  "12yr_1.99%": 0.01247,
+} as const;
+
+type FactorKey = keyof typeof PAYMENT_FACTORS;
+
+function calcMonthly(price: number, key: FactorKey): number {
+  return Math.round(price * PAYMENT_FACTORS[key] * 100) / 100;
+}
+
+/**
+ * Build real financing products using LightReach payment factors.
+ * No API call needed — factors are contractual rates from LightReach.
+ */
 export async function fetchFinancingProducts(
   price: number,
-  state: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _state: string
 ): Promise<FinancingProduct[]> {
-  const apiKey = process.env.LIGHTREACH_API_KEY;
-  const orgAlias = process.env.LIGHTREACH_ORG_ALIAS;
-
-  if (!apiKey || !orgAlias) {
-    return getMockProducts(price);
-  }
-
-  try {
-    const response = await fetch("https://api.lightreach.com/v1/quotes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({ orgAlias, systemPrice: price, state }),
-    });
-
-    if (!response.ok) {
-      return getMockProducts(price);
-    }
-
-    const data = await response.json();
-    return (data.products as FinancingProduct[]) ?? getMockProducts(price);
-  } catch {
-    return getMockProducts(price);
-  }
+  return [
+    {
+      id: "comfort-12-fixed",
+      name: "Comfort Plan — 12 Year Fixed",
+      escalationRate: 0,
+      termYears: 12,
+      monthlyPayments: [{ monthlyPayment: calcMonthly(price, "12yr_0%"), term: 144 }],
+    },
+    {
+      id: "comfort-10-fixed",
+      name: "Comfort Plan — 10 Year Fixed",
+      escalationRate: 0,
+      termYears: 10,
+      monthlyPayments: [{ monthlyPayment: calcMonthly(price, "10yr_0%"), term: 120 }],
+    },
+    {
+      id: "comfort-12-099",
+      name: "Comfort Plan — 12 Year (0.99%/yr)",
+      escalationRate: 0.99,
+      termYears: 12,
+      monthlyPayments: [{ monthlyPayment: calcMonthly(price, "12yr_0.99%"), term: 144 }],
+    },
+    {
+      id: "comfort-10-099",
+      name: "Comfort Plan — 10 Year (0.99%/yr)",
+      escalationRate: 0.99,
+      termYears: 10,
+      monthlyPayments: [{ monthlyPayment: calcMonthly(price, "10yr_0.99%"), term: 120 }],
+    },
+    {
+      id: "comfort-12-199",
+      name: "Comfort Plan — 12 Year (1.99%/yr)",
+      escalationRate: 1.99,
+      termYears: 12,
+      monthlyPayments: [{ monthlyPayment: calcMonthly(price, "12yr_1.99%"), term: 144 }],
+    },
+    {
+      id: "comfort-10-199",
+      name: "Comfort Plan — 10 Year (1.99%/yr)",
+      escalationRate: 1.99,
+      termYears: 10,
+      monthlyPayments: [{ monthlyPayment: calcMonthly(price, "10yr_1.99%"), term: 120 }],
+    },
+  ];
 }
 
 export function selectDefaultProduct(
@@ -38,34 +81,4 @@ export function selectDefaultProduct(
   return (
     products.find((p) => p.escalationRate === 0) ?? products[0] ?? null
   );
-}
-
-function getMockProducts(price: number): FinancingProduct[] {
-  const monthly25 = Math.round((price * 1.15) / (25 * 12));
-  const monthly20 = Math.round((price * 1.12) / (20 * 12));
-  return [
-    {
-      id: "comfort-25",
-      name: "Comfort Plan — 25 Year",
-      escalationRate: 0,
-      termYears: 25,
-      monthlyPayments: [{ monthlyPayment: monthly25, term: 300 }],
-    },
-    {
-      id: "comfort-20",
-      name: "Comfort Plan — 20 Year",
-      escalationRate: 0,
-      termYears: 20,
-      monthlyPayments: [{ monthlyPayment: monthly20, term: 240 }],
-    },
-    {
-      id: "comfort-escalating-25",
-      name: "Comfort Plan — 25 Year (Escalating)",
-      escalationRate: 2.9,
-      termYears: 25,
-      monthlyPayments: [
-        { monthlyPayment: Math.round(monthly25 * 0.85), term: 300 },
-      ],
-    },
-  ];
 }
