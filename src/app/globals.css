@@ -3,25 +3,74 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --kin-bg: #0c0b08;
+  --kin-surface: #141210;
+  --kin-text: #f0ebe0;
+  --kin-muted: rgba(240, 235, 224, 0.45);
+  --kin-gold: #c9a84c;
+  --kin-red: #e05555;
+  --kin-green: #4caf6e;
+  --kin-border: rgba(255, 255, 255, 0.08);
+  /* Aliases used by components */
+  --bg: #0c0b08;
+  --text: #f0ebe0;
+  --muted: rgba(240, 235, 224, 0.45);
+  --gold: #c9a84c;
+  --red: #e05555;
+  --green: #4caf6e;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--kin-bg);
+  color: var(--kin-text);
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
 }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--kin-gold);
+  cursor: pointer;
+  border: 2px solid var(--kin-bg);
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.6);
+}
+
+/* Confetti */
+@keyframes confettiFall {
+  0% { transform: translateY(-12px) rotate(0); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(760deg); opacity: 0; }
+}
+
+/* SVG animations for financial compare */
+@keyframes bagTip { 0%,100% { transform: rotate(0deg); } 35%,70% { transform: rotate(-38deg); } }
+@keyframes coinFly1 { 0% { opacity:0; transform: translate(0,0) rotate(0); } 20% { opacity:1; } 100% { opacity:0; transform: translate(22px,-15px) rotate(380deg); } }
+@keyframes coinFly2 { 0% { opacity:0; transform: translate(0,0) rotate(0); } 40% { opacity:1; } 100% { opacity:0; transform: translate(18px,-21px) rotate(-260deg); } }
+@keyframes shakeUnit { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-2px); } 40% { transform: translateX(2px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
+@keyframes crackShow { 0%,55% { opacity:0; } 65%,100% { opacity:1; } }
+@keyframes zapShow { 0%,72% { opacity:0; } 82%,94% { opacity:1; } 100% { opacity:0; } }
+@keyframes drip { 0% { opacity:0; transform: translateY(0); } 20% { opacity:1; } 85% { opacity:1; } 100% { opacity:0; transform: translateY(12px); } }
+@keyframes fanSlow { 0% { transform: rotate(0deg); } 65% { transform: rotate(550deg); } 85% { transform: rotate(610deg); } 100% { transform: rotate(622deg); } }
+@keyframes xPop { 0%,62% { opacity:0; transform: scale(0); } 73%,100% { opacity:1; transform: scale(1); } }
+@keyframes puff { 0% { opacity:0; transform: translateY(0) scale(.5); } 30% { opacity:.7; } 100% { opacity:0; transform: translateY(-18px) scale(1.5); } }
+@keyframes topFall { 0%,20% { transform: translateY(0) rotate(0); } 100% { transform: translateY(8px) rotate(-15deg); } }
+@keyframes sideFall { 0%,20% { transform: translate(0,0) rotate(0); } 100% { transform: translate(-4px,6px) rotate(-18deg); } }
+@keyframes rubbleIn { 0%,45% { opacity:0; transform: translateY(-3px); } 100% { opacity:1; transform: translateY(0); } }
+@keyframes dustUp { 0%,45% { opacity:0; transform: scale(0); } 68% { opacity:.6; } 100% { opacity:0; transform: scale(1.6); } }
+@keyframes shieldPop { 0% { transform: scale(0) rotate(-12deg); opacity:0; } 55% { transform: scale(1.18) rotate(2deg); } 75% { transform: scale(.94); } 100% { transform: scale(1); opacity:1; } }
+@keyframes glowPulse { 0%,100% { opacity:.22; } 50% { opacity:.6; } }
+@keyframes checkIn { 0%,20% { stroke-dashoffset: 22; } 90%,100% { stroke-dashoffset: 0; } }
+@keyframes boltIn { 0% { transform: translateX(0); opacity:1; } 45% { transform: translateX(12px); } 55% { transform: translateX(12px); } 100% { transform: translateX(-2px); opacity:.6; } }
+@keyframes shieldFlash { 0%,40% { fill: #4caf6e; } 50%,62% { fill: #7ddf90; } 75%,100% { fill: #4caf6e; } }
