@@ -7,6 +7,13 @@ export interface QuoteParams {
   kw?: string;
   src?: string;
   state?: string;
+  city?: string;
+  model?: string;
+  seer?: string;
+  tons?: string;
+  brand?: string;
+  warranty?: string;
+  variant?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -28,6 +35,7 @@ export interface QuizAnswers {
 export interface QuizStepDef {
   id: keyof QuizAnswers | "miniSplitConfig";
   question: string;
+  subtext?: string;
   options?: string[];
 }
 

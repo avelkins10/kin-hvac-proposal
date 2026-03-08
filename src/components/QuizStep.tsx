@@ -10,14 +10,22 @@ interface QuizStepProps {
 
 export default function QuizStep({ step, onAnswer, selected }: QuizStepProps) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4 w-full max-w-lg">
       <h2
         className="text-2xl md:text-3xl font-semibold leading-snug"
         style={{ fontFamily: "var(--font-playfair), serif" }}
       >
         {step.question}
       </h2>
-      <div className="flex flex-col gap-3">
+      {step.subtext && (
+        <p
+          className="text-sm leading-relaxed -mt-1"
+          style={{ color: "rgba(240,235,224,0.45)" }}
+        >
+          {step.subtext}
+        </p>
+      )}
+      <div className="flex flex-col gap-3 mt-2">
         {step.options?.map((option) => {
           const isSelected = selected === option;
           return (

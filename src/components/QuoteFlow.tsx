@@ -179,12 +179,20 @@ export default function QuoteFlow({ params }: QuoteFlowProps) {
         className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4"
         style={{ padding: "clamp(32px, 8vw, 64px) 16px" }}
       >
+        {/* Eyebrow with trust signals */}
         <div
-          className="text-xs font-semibold uppercase tracking-widest mb-6"
-          style={{ color: "var(--kin-gold)", letterSpacing: "6px" }}
+          className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium uppercase mb-8"
+          style={{ color: "rgba(240,235,224,0.5)", letterSpacing: "3px" }}
         >
-          KIN HOME
+          <span style={{ color: "var(--kin-gold)" }}>KIN HOME</span>
+          <span>·</span>
+          <span>⭐ 4.4 Stars</span>
+          <span>·</span>
+          <span>879+ Google Reviews</span>
+          <span>·</span>
+          <span>Licensed &amp; Insured in Florida</span>
         </div>
+
         <h1
           className="font-bold leading-tight mb-5"
           style={{
@@ -193,21 +201,30 @@ export default function QuoteFlow({ params }: QuoteFlowProps) {
             color: "var(--kin-text)",
           }}
         >
-          Hi {firstName}, your personalized
+          Hi {firstName}, your Comfort Plan
           <br />
-          <span style={{ color: "var(--kin-gold)" }}>Comfort Plan</span> is ready
+          <span style={{ color: "var(--kin-gold)" }}>quote is ready.</span>
         </h1>
         <p
-          className="max-w-md mb-10 leading-relaxed"
+          className="max-w-lg mb-6 leading-relaxed"
           style={{
             fontSize: "clamp(15px, 3.5vw, 17px)",
-            color: "var(--kin-muted)",
+            color: "rgba(240,235,224,0.55)",
           }}
         >
-          {utilityInfo?.rateNote
-            ? `${utilityInfo.rateNote}. Answer a few quick questions so we can fine-tune your quote — it only takes about 30 seconds.`
-            : "We've put together a custom HVAC solution for your home. Answer a few quick questions so we can fine-tune your quote — it only takes about 30 seconds."}
+          {utilityInfo?.rateNote ?? "Utility rates keep rising. A high-efficiency system is the one bill you control. Your quote is already built."}
         </p>
+
+        {/* Trust bar */}
+        <div
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs mb-10"
+          style={{ color: "rgba(240,235,224,0.45)" }}
+        >
+          <span>✓ 879 Google Reviews, 4.4 Stars</span>
+          <span>✓ Licensed &amp; Insured — FL HVAC Contractor</span>
+          <span>✓ 10-Year Parts Warranty</span>
+          <span>✓ Same-Day Installation Available</span>
+        </div>
 
         <button
           onClick={() => setStep(1)}
@@ -221,10 +238,10 @@ export default function QuoteFlow({ params }: QuoteFlowProps) {
             cursor: "pointer",
           }}
         >
-          Let&apos;s get started
+          See My Quote
         </button>
 
-        <div className="mt-12">
+        <div className="mt-10">
           <CallToAction trackingPayload={trackingPayload} />
         </div>
       </div>
@@ -244,10 +261,10 @@ export default function QuoteFlow({ params }: QuoteFlowProps) {
         >
           <div className="text-center">
             <div className="text-2xl font-bold mb-2" style={{ fontFamily: "var(--font-playfair), serif" }}>
-              Building your plan…
+              Confirming your quote…
             </div>
             <div style={{ color: "var(--kin-muted)", fontSize: "14px" }}>
-              Fetching financing options
+              Building your personalized Comfort Plan
             </div>
           </div>
         </div>

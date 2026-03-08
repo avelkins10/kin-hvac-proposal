@@ -12,6 +12,13 @@ interface PageProps {
     kw?: string;
     src?: string;
     state?: string;
+    city?: string;
+    model?: string;
+    seer?: string;
+    tons?: string;
+    brand?: string;
+    warranty?: string;
+    variant?: string;
     utm_source?: string;
     utm_medium?: string;
     utm_campaign?: string;
@@ -38,6 +45,13 @@ export default function QuotePage({ searchParams }: PageProps) {
     kw: searchParams.kw,
     src: searchParams.src,
     state: searchParams.state,
+    city: searchParams.city,
+    model: searchParams.model,
+    seer: searchParams.seer,
+    tons: searchParams.tons,
+    brand: searchParams.brand,
+    warranty: searchParams.warranty,
+    variant: searchParams.variant,
     utm_source: searchParams.utm_source,
     utm_medium: searchParams.utm_medium,
     utm_campaign: searchParams.utm_campaign,

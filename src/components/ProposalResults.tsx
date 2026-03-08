@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FinancingProduct, QuoteParams, QuizAnswers, UtilityConfig } from "@/types";
 import FinancialCompare from "./FinancialCompare";
 import CallToAction from "./CallToAction";
+import EquipmentCallout from "./EquipmentCallout";
 
 interface ProposalResultsProps {
   params: QuoteParams;
@@ -11,6 +12,13 @@ interface ProposalResultsProps {
   products: FinancingProduct[];
   utilityInfo: UtilityConfig | null;
   effectivePrice: number;
+}
+
+function escalatorLabel(rate: number, monthlyPayment: number): string {
+  if (rate === 0) return "Fixed payment \u2014 stays the same every month";
+  const yearlyIncrease = Math.round(monthlyPayment * (rate / 100));
+  if (yearlyIncrease < 1) return "Increases less than $1/mo per year";
+  return `Increases ~$${yearlyIncrease}/mo per year`;
 }
 
 export default function ProposalResults({
@@ -55,17 +63,18 @@ export default function ProposalResults({
             color: "var(--gold)",
             background: "rgba(201,168,76,0.12)",
             border: "1px solid rgba(201,168,76,0.2)",
+            letterSpacing: "4px",
           }}
         >
-          Your Personalized Proposal
+          Your Comfort Plan
         </div>
         <h1
           className="text-3xl md:text-4xl font-bold leading-tight"
           style={{ fontFamily: "var(--font-playfair), serif" }}
         >
           {params.name
-            ? `${params.name.split(" ")[0]}, here's your Comfort Plan`
-            : "Your Comfort Plan"}
+            ? `${params.name.split(" ")[0]}, here\u2019s your quote.`
+            : "Here\u2019s your quote."}
         </h1>
         {utilityInfo && (
           <p className="text-sm max-w-md" style={{ color: "var(--muted)" }}>
@@ -107,11 +116,9 @@ export default function ProposalResults({
                     >
                       {product.name}
                     </div>
-                    {product.escalationRate > 0 && (
-                      <div className="text-xs" style={{ color: "var(--muted)" }}>
-                        +{product.escalationRate}% annual escalation
-                      </div>
-                    )}
+                    <div className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
+                      {escalatorLabel(product.escalationRate, monthly)}
+                    </div>
                   </div>
                   <div
                     className="text-xl font-bold"
@@ -150,10 +157,10 @@ export default function ProposalResults({
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <Feature icon="❄️" text="New system, installed" />
-            <Feature icon="🔧" text="All repairs covered" />
-            <Feature icon="📋" text="Annual tune-ups" />
-            <Feature icon="🛡️" text={`${termYears}-year term`} />
+            <Feature icon="\u2744\uFE0F" text="New system, installed" />
+            <Feature icon="\uD83D\uDD27" text="All repairs covered" />
+            <Feature icon="\uD83D\uDCCB" text="Annual tune-ups" />
+            <Feature icon="\uD83D\uDEE1\uFE0F" text={`${termYears}-year term`} />
           </div>
 
           <div className="flex flex-col gap-3">
@@ -172,6 +179,9 @@ export default function ProposalResults({
           </div>
         </div>
       )}
+
+      {/* Equipment Callout — Scout's copy */}
+      <EquipmentCallout params={params} sqft={answers.sqft} />
 
       {/* Financial comparison */}
       {showCompare && selected && (
@@ -196,7 +206,7 @@ export default function ProposalResults({
       )}
 
       {/* CTA */}
-      <div id="cta-section" className="flex flex-col items-center gap-6 py-4">
+      <div id="cta-section" className="flex flex-col items-center gap-4 py-4">
         <button
           className="w-full md:w-auto px-10 py-4 font-bold text-lg transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
           style={{
@@ -213,10 +223,19 @@ export default function ProposalResults({
             });
           }}
         >
-          Get my Comfort Plan →
+          Reserve My Installation Date &rarr;
         </button>
 
-        <div className="flex flex-col items-center gap-1">
+        {/* Credit disclaimer — Scout: directly below CTA, 14px min */}
+        <p
+          className="text-center max-w-md"
+          style={{ color: "rgba(240,235,224,0.45)", fontSize: "14px", lineHeight: "1.5" }}
+        >
+          Soft check only &mdash; no impact to your credit score until you decide to proceed.
+          KIN never sees your SSN. Financing handled by LightReach, a licensed lender.
+        </p>
+
+        <div className="flex flex-col items-center gap-1 mt-2">
           <p className="text-sm" style={{ color: "var(--muted)" }}>
             Prefer to talk it through?
           </p>
