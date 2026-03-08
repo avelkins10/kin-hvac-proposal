@@ -1,10 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export interface DuctlessSystem {
   id: string;
   name: string;
@@ -14,18 +9,23 @@ export interface DuctlessSystem {
 }
 
 export async function fetchDuctlessSystem(): Promise<DuctlessSystem | null> {
-  if (!supabaseUrl || !supabaseAnonKey) return null;
-  const { data, error } = await supabase
-    .from("ductless_systems")
-    .select("id, name, customer_price, display_order, enabled")
-    .eq("enabled", true)
-    .order("display_order")
-    .limit(1)
-    .single();
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
 
-  if (error) {
-    console.error("Supabase error:", error);
+  try {
+    const supabase = createClient(url, key);
+    const { data, error } = await supabase
+      .from("ductless_systems")
+      .select("id, name, customer_price, display_order, enabled")
+      .eq("enabled", true)
+      .order("display_order")
+      .limit(1)
+      .single();
+
+    if (error) return null;
+    return data as DuctlessSystem;
+  } catch {
     return null;
   }
-  return data as DuctlessSystem;
 }
