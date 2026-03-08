@@ -54,7 +54,7 @@ export default function EquipmentCallout({
           <Spec icon="🛡️" text={warranty} />
           <Spec
             icon="👷"
-            text="Installed by KIN\u2019s licensed Florida HVAC technicians"
+            text="Installed by KIN's licensed Florida HVAC technicians"
           />
           <Spec icon="📋" text="Permits pulled and handled by KIN" />
           <Spec icon="♻️" text="Haul-away of your old system included" />

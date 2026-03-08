@@ -157,10 +157,10 @@ export default function ProposalResults({
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <Feature icon="\u2744\uFE0F" text="New system, installed" />
-            <Feature icon="\uD83D\uDD27" text="All repairs covered" />
-            <Feature icon="\uD83D\uDCCB" text="Annual tune-ups" />
-            <Feature icon="\uD83D\uDEE1\uFE0F" text={`${termYears}-year term`} />
+            <Feature icon="❄️" text="New system, installed" />
+            <Feature icon="🔧" text="All repairs covered" />
+            <Feature icon="📋" text="Annual tune-ups" />
+            <Feature icon="🛡️" text={`${termYears}-year term`} />
           </div>
 
           <div className="flex flex-col gap-3">
